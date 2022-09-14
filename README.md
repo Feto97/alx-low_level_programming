@@ -1,1 +1,1 @@
-we want to learn c language here
+learning c language
