@@ -1,68 +1,66 @@
+#include "main.h"
 #include <stdlib.h>
-#include <stdio.h>
-/**
-  * _isdigit - tells if the string consists of digits
-  * @argv: pointer to current item in argument
-  * Return: return 0 if all digits, 1 if not all digits.
-  */
-int _isdigit(char *argv)
-{
-	int i;
 
-	i = 0;
-	while (argv[i])
-	{
-		if (argv[i] >= '0' && argv[i] <= '9')
-			i++;
-		else
-			return (1);
-	}
-	return (0);
-}
 /**
-  * _atoi - converts a string of ascii digits to the values they represent
-  * @s: pointer to the source string
-  * Return: value of digits
-  */
-int _atoi(char *s)
-{
-	int i, result;
+ *_realloc - function reallocates a memory block using malloc and free
+ *@ptr: pointer to the memory previously allocated
+ *@old_size: size in bytes
+ *@new_size: size in bytes
+ *Return: pointer
+ */
 
-	i = result = 0;
-	while (s[i])
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
+{
+	void *reaptr;
+
+	if (ptr == NULL)
 	{
-		if (s[i] >= '0' && s[i] <= '9')
+		reaptr = malloc(new_size);
+		if (reaptr == NULL)
 		{
-			result *= 10;
-			result += (s[i] - '0');
+			free(ptr);
+			return (NULL);
 		}
-		i++;
+		free(ptr);
+		return (reaptr);
 	}
-	return (result);
+	if (new_size == old_size)
+		return (ptr);
+	if (new_size == 0 && ptr != NULL)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	reaptr = malloc(new_size);
+	if (reaptr == NULL)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	if (new_size > old_size)
+		_memcpy(reaptr, ptr, old_size);
+	free(ptr);
+	return (reaptr);
 }
-/**
-  * main - main function call
-  * @argc: argument count
-  * @argv: 2D array of arguments
-  * Return: return 0 on success, 98 on failure
-  */
-int main(int argc, char *argv[])
-{
-	int i;
 
-	malloc();
-	if (argc != 3)
+/**
+ * _memcpy - function that copies memory area
+ * @dest: dest positions
+ * @src: source position
+ * @n: size of bytes
+ * Return: char
+ */
+
+char *_memcpy(char *dest, char *src, unsigned int n)
+{
+	unsigned int i = 0;
+	unsigned int j = 0;
+
+	while (i < n)
 	{
-		printf("Error\n");
-		exit(98);
+		*(dest + i) = *(src + j);
+		i += 1;
+		j += 1;
 	}
-	for (i = 1; i < argc; i++)
-	{
-		if (_isdigit(argv[i]))
-		{
-			printf("Error\n");
-			exit(98);
-		}
-	}
-	return (0);
+	return (dest);
 }
